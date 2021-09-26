@@ -30,7 +30,7 @@ h4 {
     color: rgb(236, 110, 236);
  }
 
- button {
+ .btn {
      background-color: rebeccapurple;
      color: rgb(241, 241, 241);
      width: fit-content;
@@ -70,7 +70,15 @@ main {
 
 /* Utility Class Selectors */
 
-.hide-content {
+.hide {
     display: none;
+}
+
+.intro-container {
+    text-align: center;
+}
+
+.align-left {
+    text-align: left;
 }
 

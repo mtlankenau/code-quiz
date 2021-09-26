@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Coding Quiz App</title>
     <link rel="stylesheet" href="./assets/style.css" />
 </head>
 <body>
@@ -12,14 +12,34 @@
         <h4 class="highscores">
             <a href="#">View high scores</a>
         </h4>
-        <h4 class="timer">Time: </h4>
+        <h4 id="timer" class="timer">Time: </h4>
     </header>
 
     <main class="test">
-        <h1>Coding Quiz Challenges</h1> 
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus quae molestias ducimus beatae necessitatibus iusto, porro minus minima quisquam suscipit aut eius velit numquam tempore ipsam voluptate tenetur! Impedit, sint.</p>
-        <button class="start-button">Start Quiz</button>
+
+        <div id="intro-container" class="intro-container">
+            <h1>Coding Quiz Challenges</h1> 
+            <p>Welcome to my coding quiz! Click the button below to start the quiz. Heads up: the quiz is timed so make sure you answer all 5 questions before time runs out. Good luck!</p>
+            <button id="start-btn" class="btn">Start Quiz</button>
+        </div>
+
+        <div class="container">
+            <div id="question-container" class="hide">
+                <div id="question">
+                    <h1>Question</h1>
+                </div>
+                <div id="answer-buttons" class="btn-grid align-left">
+                    <button class="btn">Answer 1</button>
+                    <button class="btn">Answer 2</button>
+                    <button class="btn">Answer 3</button>
+                    <button class="btn">Answer 4</button>
+                </div>
+            </div>
+        </div>
+
     </main>
-    
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="assets/script.js"></script>
 </body>
 </html>
