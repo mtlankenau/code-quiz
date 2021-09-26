@@ -4,6 +4,7 @@ const nextButton = document.getElementById("next-btn")
 const questionContainerElement = document.getElementById("question-container")
 const questionElement = document.getElementById("question")
 const answerButtonsElement = document.getElementById("answer-buttons")
+const answerFeedbackElement = document.getElementById("answer-feedback-container")
 
 let selectedQuestions, currentQuestionIndex
 startButton.addEventListener("click", startGame)
@@ -12,31 +13,32 @@ startButton.addEventListener("click", startGame)
 function startGame() {
     console.log("Started");
     introContainerElement.classList.add("hide");
-    selectedQuestions = questions//.sort(function(){Math.random() - 0.5})
-    currentQuestionIndex = 0
+    selectedQuestions = questions;
+    currentQuestionIndex = 0;
     questionContainerElement.classList.remove("hide");
+    countdownTimer();
     setNextQuestion();
 };
 
 // function for displaying the next question
 function setNextQuestion() {
     // resetState()
-    showQuestion(selectedQuestions[currentQuestionIndex])
+    showQuestion(selectedQuestions[currentQuestionIndex]);
 }
 
 // function for showing each question by passing question array
 function showQuestion(question) {
     // set text of h1 
-    questionElement.innerText = question.question
+    questionElement.innerText = question.question;
     question.answers.forEach(answer => {
-        const button = document.createElement("button")
-        button.innerText = answer.text
-        button.classList.add("btn")
+        const button = document.createElement("button");
+        button.innerText = answer.text;
+        button.classList.add("btn", "answers");
         if (answer.correct) {
-            button.dataset.correct = answer.correct
+            button.dataset.correct = answer.correct;
         }
-        button.addEventListener("click", selectAnswer)
-        answerButtonsElement.appendChild(button)
+        button.addEventListener("click", selectAnswer);
+        answerButtonsElement.appendChild(button);
     })
 }
 
@@ -49,26 +51,31 @@ function showQuestion(question) {
 
 // function for selecting answer
 function selectAnswer(event) {
-    const selectedButton = event.target
-    const correct = selectedButton.dataset.correct
-    setStatusClass(document.body, correct)
-    Array.from(answerButtonsElement.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct)
-    })
-    if (selectedQuestions.length > currentQuestionIndex + 1) {
-        //////////
-    } else {
-        //finalScore function
-    }
-}
-
-function setStatusClass(element, correct) {
-    clearStatusClass(element)
+    const selectedButton = event.target;
+    const correct = selectedButton.dataset.correct;
     if (correct) {
-        element.classList.add("correct")
+        // answerFeedbackElement.classList.remove("hide");
+        answerFeedbackElement.innerText = "Correct!";
     } else {
-        element.classList.add("wrong")
+        answerFeedbackElement.innerText = "Wrong!";
     }
+    // clearStatus();
+    currentQuestionIndex++;
+    setNextQuestion();
+};
+
+//     Array.from(answerButtonsElement.children).forEach(button => {
+//         setStatusClass(button, button.dataset.correct)
+//     })
+//     if (selectedQuestions.length > currentQuestionIndex + 1) {
+//         //////////
+//     } else {
+//         //finalScore function
+//     }
+
+function clearStatus() {
+    const button = document.getElementsByClassName("answers");
+    answerButtonsElement.removeChild(button);
 }
 // array of questions and answers
 const questions = [
@@ -120,6 +127,19 @@ const questions = [
 ];
 
 
+function countdownTimer() {
+    var count = 74;
+    var countdownTimer = setInterval(function(){
+        var timerElement = document.getElementById("timer");
+        timerElement.innerHTML = "Time left: " + count--;
+        if (count < 0) {
+            clearInterval(countdownTimer);
+            alert("Time has expired, try again!")
+            window.location.reload();
+        }
+    }, 1000);
+}
+
 // Countdown timer
 // var count = 60;
 // var countdownTimer = setInterval(function(){
@@ -128,4 +148,3 @@ const questions = [
 //         clearInterval(countdownTimer);
 //     };
 // }, 1000);
-
