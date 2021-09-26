@@ -1,79 +1,122 @@
 const introContainerElement = document.getElementById("intro-container")
-const startButton = document.getElementById("start-btn");
-const questionContainerElement = document.getElementById("question-container");
+const startButton = document.getElementById("start-btn")
+const nextButton = document.getElementById("next-btn")
+const questionContainerElement = document.getElementById("question-container")
+const questionElement = document.getElementById("question")
+const answerButtonsElement = document.getElementById("answer-buttons")
 
+let selectedQuestions, currentQuestionIndex
 startButton.addEventListener("click", startGame)
 
 // function for starting the quiz
 function startGame() {
     console.log("Started");
     introContainerElement.classList.add("hide");
+    selectedQuestions = questions//.sort(function(){Math.random() - 0.5})
+    currentQuestionIndex = 0
     questionContainerElement.classList.remove("hide");
     setNextQuestion();
 };
 
 // function for displaying the next question
-var setNextQuestion = function() {
-
+function setNextQuestion() {
+    // resetState()
+    showQuestion(selectedQuestions[currentQuestionIndex])
 }
+
+// function for showing each question by passing question array
+function showQuestion(question) {
+    // set text of h1 
+    questionElement.innerText = question.question
+    question.answers.forEach(answer => {
+        const button = document.createElement("button")
+        button.innerText = answer.text
+        button.classList.add("btn")
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener("click", selectAnswer)
+        answerButtonsElement.appendChild(button)
+    })
+}
+
+// function resetState() {
+//     nextButton.classList.add("hide")
+//     while (answerButtonsElement.firstChild) {
+//         answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+//     }
+// }
 
 // function for selecting answer
-var selectAnswer = function () {
-
+function selectAnswer(event) {
+    const selectedButton = event.target
+    const correct = selectedButton.dataset.correct
+    setStatusClass(document.body, correct)
+    Array.from(answerButtonsElement.children).forEach(button => {
+        setStatusClass(button, button.dataset.correct)
+    })
+    if (selectedQuestions.length > currentQuestionIndex + 1) {
+        //////////
+    } else {
+        //finalScore function
+    }
 }
 
-
-var questionsAndAnswers = [
+function setStatusClass(element, correct) {
+    clearStatusClass(element)
+    if (correct) {
+        element.classList.add("correct")
+    } else {
+        element.classList.add("wrong")
+    }
+}
+// array of questions and answers
+const questions = [
     {
         question: "Which HTML element do we put JavaScript code within?",
-        answers: {
-            a: "<link>",
-            b: "<script>",
-            c: "<js>",
-            d: "<main>"
-        },
-        correctAnswer: "b" 
+        answers: [
+            { text: "<link>", correct: false },
+            { text: "<script>", correct: true },
+            { text: "<js>", correct: false },
+            { text: "<main>", correct: false }
+        ]
     },
     {
         question: "What symbol syntax represents the jQuery function?",
-        answers: {
-            a: "@",
-            b: "*",
-            c: "&",
-            d: "$"
-        },
-        correctAnswer: "d"
+        answers: [
+            { text: "@", correct: false },
+            { text: "*", correct: false },
+            { text: "&", correct: false },
+            { text: "$", correct: true }
+        ]  
     },
     {
         question: "How would you pass variable 'imAnArgument' into a function?",
-        answers: {
-            a: "function = imAnArgument() {// code to be executed}",
-            b: "imAnArgument()",
-            c: "function(imAnArgument) {// code to be executed}",
-            d: "imAnArgument(function)"
-        },
-        correctAnswer: "c"
+        answers: [
+            { text: "function = imAnArgument() {// code to be executed}", correct: false },
+            { text: "imAnArgument()", correct: false },
+            { text: "function(imAnArgument) {// code to be executed}", correct: true },
+            { text: "imAnArgument(function)", correct: false }
+        ]    
     },
     {
         question: "What is DOM an acronym for?",
-        answers: {
-            a: "Declaration Of Modal",
-            b: "Direct Object Manipulation",
-            c: "Dominant Orientation Mandate",
-            d: "Document Object Model"
-        },
-        correctAnswer: "d"
+        answers: [
+            { text: "Declaration Of Modal", correct: false },
+            { text: "Direct Object Manipulation", correct: false },
+            { text: "Dominant Orientation Mandate", correct: false },
+            { text: "Document Object Model", correct: true }
+        ]
     },
     {
         question: "Which of the following is an example of a string?",
-        answers: {
-            a: "'I could maybe be a string'",
-            b: "12",
-            c: "break",
-            d: "I may possibly be a string",
-        },
-        correctAnswer: "a"
-    },
+        answers: [
+            { text: "'I could maybe be a string'", correct: true },
+            { text: "12", correct: false },
+            { text: "break", correct: false },
+            { text: "I may possibly be a string", correct: false }
+        ]
+    }
 ];
 
 
@@ -86,29 +129,3 @@ var questionsAndAnswers = [
 //     };
 // }, 1000);
 
-// Create Quiz
-// var createQuiz = function (){
-
-//     for (var i = 0; i < questionsAndAnswers.length; i++) {
-//         var newQuestionH1El = $("<h1></h1>")
-//         .addClass("start-page")
-//         .append(questionsAndAnswers.question);
-   
-
-//     $("#questions")
-//         .replaceWith(newQuestionH1El);
-
-//     $("#start-paragraph")
-//         .remove();
-
-//     var newAnswersButtonEl = $("<button></button>")
-//         .addClass("start-page start-button")
-//         .append(questionsAndAnswers.answers);
-    
-//     $("#answers")
-//         .replaceWith(newAnswersButtonEl);
-//     }
-// };
-
-// Begin quiz by clicking on "Start Quiz" button
-// $(".start-button").on("click", createQuiz);
