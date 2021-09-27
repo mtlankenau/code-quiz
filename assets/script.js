@@ -19,7 +19,7 @@ const highscoresList = document.getElementById("highscores-list");
 let isTakingQuiz = false;
 let selectedQuestions, currentQuestionIndex;
 let currentScore = 0;
-const maxScore = 5;
+let count = 74;
 
 // event listeners for all buttons & their associated function calls
 startButton.addEventListener("click", startGame);
@@ -76,6 +76,7 @@ function selectAnswer(event) {
         currentScore++;
     } else {
         answerFeedbackElement.innerText = "Wrong!";
+        count -= 10;
     }
     clearStatus();
     currentQuestionIndex++;
@@ -91,12 +92,13 @@ function clearStatus() {
 
 // function that shows results of quiz after completion
 function finalScreenFunction() {
+    currentScore = count
     isTakingQuiz = false;
     document.getElementById("timer").classList.add("hide");
     questionContainerElement.classList.add("hide");
     answerFeedbackElement.classList.add("hide");
     finalScreenElement.classList.remove("hide");
-    var finalScorePEl =  "<p> Your final score is " + currentScore + " out of " + maxScore + "</p>";
+    var finalScorePEl =  "<p> Your final score is " + currentScore + "</p>";
     document.getElementById("final-screen-p").innerHTML = finalScorePEl;
 };
 
@@ -197,7 +199,7 @@ const questions = [
 
 // countdown timer
 function countdownTimer() {
-    var count = 74;
+    
     var countdownTimer = setInterval(function(){
         var timerElement = document.getElementById("timer");
         timerElement.innerHTML = "Time left: " + count--;
