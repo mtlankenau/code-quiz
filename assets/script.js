@@ -1,34 +1,58 @@
-const introContainerElement = document.getElementById("intro-container")
-const startButton = document.getElementById("start-btn")
-const nextButton = document.getElementById("next-btn")
-const questionContainerElement = document.getElementById("question-container")
-const questionElement = document.getElementById("question")
-const answerButtonsElement = document.getElementById("answer-buttons")
-const answerFeedbackElement = document.getElementById("answer-feedback-container")
+// global constant variables - selects various elements by their ids
+const overallContainerElement = document.getElementById("overall-container");
+const introContainerElement = document.getElementById("intro-container");
+const startButton = document.getElementById("start-btn");
+const submitButton = document.getElementById("submit-btn");
+const goBackButton = document.getElementById("go-back");
+const clearHighscoresButton = document.getElementById("clear-highscores");
+const viewHighscoresButton = document.getElementById("highscores-btn")
+const questionContainerElement = document.getElementById("question-container");
+const questionElement = document.getElementById("question");
+const answerButtonsElement = document.getElementById("answer-buttons");
+const answerFeedbackElement = document.getElementById("answer-feedback-container");
+const finalScreenElement = document.getElementById("final-screen");
+const highscoresElement = document.getElementById("highscores");
+const scoreInputElement = document.getElementById("highscore-input");
+const highscoresList = document.getElementById("highscores-list");
 
-let selectedQuestions, currentQuestionIndex
-startButton.addEventListener("click", startGame)
+// other global variables
+let isTakingQuiz = false;
+let selectedQuestions, currentQuestionIndex;
+let currentScore = 0;
+const maxScore = 5;
+
+// event listeners for all buttons & their associated function calls
+startButton.addEventListener("click", startGame);
+submitButton.addEventListener("click", highScores);
+goBackButton.addEventListener("click", goBack);
+clearHighscoresButton.addEventListener("click", clearHighscores);
+viewHighscoresButton.addEventListener("click", viewHighscores);
 
 // function for starting the quiz
 function startGame() {
-    console.log("Started");
+    isTakingQuiz = true;
+    currentScore = 0;
     introContainerElement.classList.add("hide");
     selectedQuestions = questions;
     currentQuestionIndex = 0;
     questionContainerElement.classList.remove("hide");
+    document.getElementById("timer").classList.remove("hide");
     countdownTimer();
     setNextQuestion();
 };
 
 // function for displaying the next question
 function setNextQuestion() {
-    // resetState()
-    showQuestion(selectedQuestions[currentQuestionIndex]);
-}
+    if (currentQuestionIndex > 4) {
+        clearStatus();
+        finalScreenFunction();
+    } else {
+        showQuestion(selectedQuestions[currentQuestionIndex]);
+    }
+};
 
 // function for showing each question by passing question array
 function showQuestion(question) {
-    // set text of h1 
     questionElement.innerText = question.question;
     question.answers.forEach(answer => {
         const button = document.createElement("button");
@@ -42,13 +66,6 @@ function showQuestion(question) {
     })
 }
 
-// function resetState() {
-//     nextButton.classList.add("hide")
-//     while (answerButtonsElement.firstChild) {
-//         answerButtonsElement.removeChild(answerButtonsElement.firstChild)
-//     }
-// }
-
 // function for selecting answer
 function selectAnswer(event) {
     const selectedButton = event.target;
@@ -56,27 +73,79 @@ function selectAnswer(event) {
     if (correct) {
         // answerFeedbackElement.classList.remove("hide");
         answerFeedbackElement.innerText = "Correct!";
+        currentScore++;
     } else {
         answerFeedbackElement.innerText = "Wrong!";
     }
-    // clearStatus();
+    clearStatus();
     currentQuestionIndex++;
     setNextQuestion();
 };
 
-//     Array.from(answerButtonsElement.children).forEach(button => {
-//         setStatusClass(button, button.dataset.correct)
-//     })
-//     if (selectedQuestions.length > currentQuestionIndex + 1) {
-//         //////////
-//     } else {
-//         //finalScore function
-//     }
-
+// function to remove dynamically created button elements from previous question
 function clearStatus() {
-    const button = document.getElementsByClassName("answers");
-    answerButtonsElement.removeChild(button);
-}
+    while (answerButtonsElement.firstChild){
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+    }
+};
+
+// function that shows results of quiz after completion
+function finalScreenFunction() {
+    isTakingQuiz = false;
+    document.getElementById("timer").classList.add("hide");
+    questionContainerElement.classList.add("hide");
+    answerFeedbackElement.classList.add("hide");
+    finalScreenElement.classList.remove("hide");
+    var finalScorePEl =  "<p> Your final score is " + currentScore + " out of " + maxScore + "</p>";
+    document.getElementById("final-screen-p").innerHTML = finalScorePEl;
+};
+
+// function that sets highscore history to local storage and displays ordered list sorted from best to worst score 
+function highScores() {
+    localStorage.setItem(scoreInputElement.value, currentScore);
+    finalScreenElement.classList.add("hide");
+    highscoresElement.classList.remove("hide");
+    // sorts highscores from best to worst
+    let highscores = Object
+        .keys(localStorage)
+        .sort(function(a, b) {
+        return localStorage[b] - localStorage[a];
+        });
+    // loops highscore results from local storage and adds to unordered list as individual list items
+    for (let i = 0; i < highscores.length; i++) {
+        document.getElementById("highscores-list").innerHTML += "<li>" + highscores[i] + " - " + localStorage.getItem(highscores[i]); 
+    };
+};
+
+// when 'Go back' button is clicked on highscores page
+function goBack() {
+    window.location.reload();
+};
+
+// when 'Clear high scores' button is clicked on highscores page
+function clearHighscores() {
+    localStorage.clear();
+    window.location.reload();
+};
+
+// when 'View high scores' link is clicked
+function viewHighscores() {
+    overallContainerElement.classList.add("hide");
+    highscoresElement.classList.remove("hide");
+    while (highscoresList.firstChild){
+        highscoresList.removeChild(highscoresList.firstChild)
+    };
+    let highscores = Object
+        .keys(localStorage)
+        .sort(function(a, b) {
+        return localStorage[b] - localStorage[a];
+        });
+
+    for (let i = 0; i < highscores.length; i++) {
+        document.getElementById("highscores-list").innerHTML += "<li>" + highscores[i] + " - " + localStorage.getItem(highscores[i]); 
+    };
+};
+
 // array of questions and answers
 const questions = [
     {
@@ -126,25 +195,16 @@ const questions = [
     }
 ];
 
-
+// countdown timer
 function countdownTimer() {
     var count = 74;
     var countdownTimer = setInterval(function(){
         var timerElement = document.getElementById("timer");
         timerElement.innerHTML = "Time left: " + count--;
-        if (count < 0) {
+        if (count < 0 && isTakingQuiz) {
             clearInterval(countdownTimer);
             alert("Time has expired, try again!")
             window.location.reload();
         }
     }, 1000);
-}
-
-// Countdown timer
-// var count = 60;
-// var countdownTimer = setInterval(function(){
-//     $("#timer").html(count--);
-//     if (count == 1) {
-//         clearInterval(countdownTimer);
-//     };
-// }, 1000);
+};

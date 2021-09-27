@@ -30,6 +30,29 @@ h4 {
     color: rgb(236, 110, 236);
  }
 
+ input {
+     padding: 12px 40px 12px 12px;
+     border-style: solid;
+     font-size: larger;
+ }
+
+ li {
+     padding: 15px 10px;
+     margin: 5px;
+     background-color: lightgray;
+     font-size: larger;
+ }
+
+ .answer-feedback {
+    font-size: 30px;
+    border-top: 5px solid gray;
+    margin-top: 20px;
+    padding-top: 20px;
+    text-align: left;
+    color: gray;
+    font-style: italic;
+}
+
  .btn {
      background-color: rebeccapurple;
      color: rgb(241, 241, 241);
@@ -58,23 +81,6 @@ main {
     align-items: center;
 }
 
-.answer-feedback {
-    font-size: 30px;
-    border-top: grey;
-    margin-top: 20px;
-    text-align: left;
-}
-
-/* .highscores {
-    float: left;
-    padding: 10px 20px;
-}
-
-.timer {
-    float: right;
-    padding: 10px 20px;
-} */
-
 /* Utility Class Selectors */
 
 .hide {
@@ -85,14 +91,9 @@ main {
     text-align: center;
 }
 
-.align-left {
-    text-align: left;
-}
-
 .btn-grid {
     display: grid;
     grid-template-columns: repeat(1, auto);
     gap: 10px;
     margin: 20px 0;
 }
-

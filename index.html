@@ -9,35 +9,44 @@
 </head>
 <body>
     <header>
-        <h4 class="highscores">
-            <a href="#">View high scores</a>
-        </h4>
+        <button id=highscores-btn class="btn">View high scores</button>
         <h4 id="timer" class="timer">Time left: 75</h4>
     </header>
-
     <main class="test">
-
-        <div id="intro-container" class="intro-container">
-            <h1>Coding Quiz Challenges</h1> 
-            <p>Welcome to my coding quiz! Click the button below to start the quiz. Heads up: the quiz is timed so make sure you answer all 5 questions before time runs out. Good luck!</p>
-            <button id="start-btn" class="btn">Start Quiz</button>
-        </div>
-
-        <div class="container">
-            <div id="question-container" class="hide">
-                <h1 id="question"></h1>
-                <div id="answer-buttons" class="btn-grid align-left"></div>
+        <div id="overall-container" class="overall-container">
+            <div id="intro-container" class="intro-container">
+                <h1>Coding Quiz Challenges</h1> 
+                <p>Welcome to my coding quiz! Click the button below to start the quiz. Heads up: the quiz is timed so make sure you answer all 5 questions before time runs out. Good luck!</p>
+                <button id="start-btn" class="btn">Start Quiz</button>
+            </div>
+            <div class="container">
+                <div id="question-container" class="hide">
+                    <h1 id="question"></h1>
+                    <div id="answer-buttons" class="btn-grid align-left"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div id="answer-feedback-container" class="answer-feedback">
+                </div>
+            </div>
+            <div class="container">
+                <div id="final-screen" class="final-screen hide">
+                    <h1>Quiz Complete!</h1>
+                    <p id="final-screen-p"></p>
+                    <input type="text" id="highscore-input" placeholder="Enter initials">
+                    <button id="submit-btn" class="btn">Submit</button>
+                </div>
             </div>
         </div>
-
         <div class="container">
-            <div id="answer-feedback-container" class="answer-feedback">
+            <div id="highscores" class="highscores hide">
+                <h1>High scores</h1>
+                <ol id="highscores-list"></ol>
+                <button id="go-back" class="btn">Go back</button>
+                <button id="clear-highscores" class="btn">Clear high scores</button>
             </div>
         </div>
-
     </main>
-
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 <script src="assets/script.js"></script>
 </body>
 </html>
